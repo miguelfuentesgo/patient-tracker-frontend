@@ -1,5 +1,5 @@
 <template>
-    <v-form v-model="valid" validate-on="submit lazy" @submit.prevent="submit">
+    <v-form v-model="valid" validate-on="input" @submit.prevent="submit" ref="form">
       <v-container>
         <v-row>
           <v-col cols="12" md="6">
@@ -48,7 +48,9 @@
       ></v-btn>
     </v-row>
       </v-container>
+      <CreatedPatientDialog v-model="showDialog"/>
     </v-form>
+    
   </template>
   <style lang="scss">
     .v-form {
@@ -57,7 +59,10 @@
   </style>
   
   <script setup>
-  import { ref } from 'vue'
+  import { ref } from 'vue';
+
+  import { usePatientStore } from '@/store/patient.store'
+  import CreatedPatientDialog  from '@/components/register/CreatedPatientDialog'
   
   // Variables reactivas
   const valid = ref(false)
@@ -66,15 +71,18 @@
   const phone = ref('')
   const disease = ref('')
   const loading = ref(false)
+  const patientStore = usePatientStore()
+  const error = ref('')
+  const showDialog = ref(false)
+  const form = ref()
   
+
   // Reglas de validación para nombre
   const nameRules = [
     (value) => !!value || 'El nombre es obligatorio.',
     (value) => (value && value.length >= 10) || 'El nombre debe ser mayor a 10 caracteres.',
   ]
   
-
-
   const emailRules = [
     (value) => !!value || 'El correo eléctrónico es obligatorio.',
     (value) => /.+@.+\..+/.test(value) || 'Correo electrónico invalido.',
@@ -90,14 +98,37 @@
   ]
 
   const submit = async (event) => {
+    if (!valid.value) {
+        return
+    }
     loading.value = true
-    console.log("Registering...")
-
-    await new Promise((resolve) => setTimeout(resolve, 3000))
-
-    console.log("Patient registered")
+    await registerPatient()
+    clearForm()
     loading.value = false
+    showDialog.value = true
 }
+
+    const registerPatient = async () => {
+        try {
+            console.log("IS VALID?", valid.value)
+            const newPatient = {
+            name: name.value,
+            email: email.value,
+            phone: phone.value,
+            disease: disease.value
+            }
+            await patientStore.createPatient(newPatient)
+            console.log("Paciente creado correctamente")
+        } catch (e) {
+            console.error(e)
+            error.value = "Hubo un error registrando el paciente"
+        }
+        
+    }
+
+    const clearForm = () => {
+        form.value.reset()
+    }
 
 
 

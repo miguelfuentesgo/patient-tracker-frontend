@@ -26,7 +26,8 @@ export default defineNuxtConfig({
     transpile: ['vuetify'],
   },
   modules: [
-    '@nuxt/image'
+    '@nuxt/image',
+    '@pinia/nuxt'
   ],
   vite: {
     vue: {
