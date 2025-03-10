@@ -1,7 +1,5 @@
 <template>
-    <h1>
-        VALENTECH PATIENT TRACKER
-    </h1>
+    <Banner />
 </template>
 
 <style scoped lang="scss">
@@ -10,3 +8,8 @@
         justify-self: center;
     }
 </style>
+
+<script setup>
+
+import Banner from '@/components/home/Banner'
+</script>
