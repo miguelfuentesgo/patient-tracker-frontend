@@ -9,7 +9,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
   ssr: false,
-  css: ['vuetify/styles','~/assets/css/main.scss'],
+  css: ['vuetify/styles' ,'@mdi/font/css/materialdesignicons.css','~/assets/css/main.scss'],
   app: {
     head: {
       title: 'Valentech Patient Tracker', 

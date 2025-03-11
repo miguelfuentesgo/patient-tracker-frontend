@@ -110,7 +110,6 @@
 
     const registerPatient = async () => {
         try {
-            console.log("IS VALID?", valid.value)
             const newPatient = {
             name: name.value,
             email: email.value,

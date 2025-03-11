@@ -29,12 +29,25 @@ export const usePatientStore = defineStore('patient', () => {
     }
   };
 
-  const getPatient = async(id:number) => {
+  const getPatientFromDB = async(id:number) => {
     try {
       const patient = await getPatientById(id);
       return patient
     } catch (err) {
-      error.value = 'Error obtaining patient';
+      error.value = 'Error obtaining patient from DB';
+    }
+  }
+
+  const getPatientFromStore = (id:number): Patient | undefined => {
+    try {
+      const patient =  patients.value.find(p => p.id === id);
+      if (!patient) {
+        console.log("Patient not found")
+      }
+      return patient
+    } catch (err) {
+      console.log("Error getting patient")
+      return undefined
     }
   }
 
@@ -66,7 +79,8 @@ export const usePatientStore = defineStore('patient', () => {
     fetchPatients,
     createPatient,
     removePatient,
-    getPatient,
-    updatePatient
+    getPatientFromDB,
+    updatePatient,
+    getPatientFromStore
   };
 });

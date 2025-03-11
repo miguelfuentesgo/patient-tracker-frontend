@@ -4,3 +4,15 @@ body {
   font-family: 'Roboto', sans-serif;
   box-sizing: border-box;
 }
+
+h1, h2 {
+  align-self: center;
+  padding: 20px;
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  margin: auto 50px; // Ocupa todo el viewport dinámico
+}

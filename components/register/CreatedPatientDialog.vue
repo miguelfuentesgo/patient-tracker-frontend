@@ -17,7 +17,7 @@
           ></v-btn>
           <v-btn
             class="ms-auto"
-            text="Ir al perfil"
+            text="Ver pacientes"
             variant="tonal"
             @click="goToPatientProfile"
           ></v-btn>

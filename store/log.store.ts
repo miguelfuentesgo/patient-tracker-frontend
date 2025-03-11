@@ -8,10 +8,20 @@ export const useLogStore = defineStore('log', () => {
   const loading = ref(false);
   const error = ref<string | null>(null);
 
+
+  const sortLogs = () => {
+    logs.value.sort((a, b) => {
+      const dateA = a.date ? new Date(a.date).getTime() : 0;
+      const dateB = b.date ? new Date(b.date).getTime() : 0;
+      return dateB - dateA;
+    });
+  };
+
   const fetchLogs = async () => {
     loading.value = true;
     try {
       logs.value = await getLogs();
+      sortLogs()
     } catch (err) {
       error.value = 'Error loading logs';
     } finally {
@@ -20,9 +30,10 @@ export const useLogStore = defineStore('log', () => {
   };
 
   const createLog = async (log: Log) => {
+    console.log("CREATING LOG", log)
     try {
-      const newLog = await addLog(log);
-      logs.value.push(newLog);
+      await addLog(log);
+      await fetchLogs()
     } catch (err) {
       error.value = 'Error creating log';
     }
@@ -58,6 +69,11 @@ export const useLogStore = defineStore('log', () => {
     }
   }
 
+  const getLogsFromPatientId = async(patientId: number): Promise<Log[]> => {
+    await fetchLogs()
+    return logs.value.filter(log => log.patient === patientId)
+  }
+
   return {
     logs,
     loading,
@@ -66,6 +82,7 @@ export const useLogStore = defineStore('log', () => {
     createLog,
     removeLog,
     getLog,
-    updateLog
+    updateLog,
+    getLogsFromPatientId
   };
 });
