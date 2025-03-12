@@ -37,9 +37,9 @@ export default defineNuxtConfig({
     },
     plugins: [
       vuetify({ autoImport: true }),
-    ]
+    ],
   },
   alias: {
     '@': resolve(__dirname, './'),
-  }
+  },
 })
